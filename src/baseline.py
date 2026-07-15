@@ -38,6 +38,9 @@ def hitung_mape(y_aktual: np.ndarray, y_prediksi: np.ndarray) -> float:
     """
     # Hindari pembagian dengan nol
     mask = y_aktual != 0
+    if mask.sum() == 0:
+        # Semua nilai aktual adalah nol; MAPE tidak terdefinisi
+        return float("nan")
     return np.mean(np.abs((y_aktual[mask] - y_prediksi[mask]) / y_aktual[mask])) * 100
 
 

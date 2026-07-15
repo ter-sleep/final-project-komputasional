@@ -30,7 +30,7 @@ RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
 
 
-def hitung_persen_perbaikan(nilai_baseline: float, nilai_baru: float) -> float:
+def hitung_persen_perbaikan(nilai_baseline: float, nilai_baru: float):
     """
     Menghitung persentase perbaikan dari baseline ke model baru.
 
@@ -43,10 +43,11 @@ def hitung_persen_perbaikan(nilai_baseline: float, nilai_baru: float) -> float:
 
     Returns
     -------
-    float : Persentase perbaikan (%)
+    float : Persentase perbaikan (%), atau None jika baseline bernilai 0
     """
     if nilai_baseline == 0:
-        return 0.0
+        # Persentase perbaikan tidak terdefinisi jika baseline = 0
+        return None
     return ((nilai_baseline - nilai_baru) / nilai_baseline) * 100
 
 
@@ -67,6 +68,10 @@ def buat_tabel_perbandingan(hasil_baseline: dict, hasil_pso: dict) -> pd.DataFra
     perbaikan_mae  = hitung_persen_perbaikan(hasil_baseline["mae"],  hasil_pso["mae"])
     perbaikan_mape = hitung_persen_perbaikan(hasil_baseline["mape"], hasil_pso["mape"])
 
+    # Bulatkan nilai perbaikan hanya jika tidak None
+    def _bulatkan(val, desimal=2):
+        return round(val, desimal) if val is not None else None
+
     tabel = pd.DataFrame({
         "Metrik": ["RMSE", "MAE", "MAPE (%)"],
         "Baseline SVR": [
@@ -80,9 +85,9 @@ def buat_tabel_perbandingan(hasil_baseline: dict, hasil_pso: dict) -> pd.DataFra
             round(hasil_pso["mape"], 4),
         ],
         "Perbaikan (%)": [
-            round(perbaikan_rmse, 2),
-            round(perbaikan_mae,  2),
-            round(perbaikan_mape, 2),
+            _bulatkan(perbaikan_rmse),
+            _bulatkan(perbaikan_mae),
+            _bulatkan(perbaikan_mape),
         ],
     })
     return tabel

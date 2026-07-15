@@ -1,0 +1,29 @@
+# Dependensi Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Lingkungan virtual
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# File output yang di-generate otomatis
+hasil/perbandingan.csv
+hasil/grafik/*.png
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# macOS
+.DS_Store
+report.log
